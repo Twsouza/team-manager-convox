@@ -10,6 +10,7 @@ name = "employees"
       updated_at = "<%= now() %>"
       name = "Employee #1"
       type = "employee"
+      role = "Software Engineer"
       tags = "{php,mysql}"
 
     [[scenario.table.row]]
@@ -18,6 +19,7 @@ name = "employees"
       updated_at = "<%= now() %>"
       name = "Employee #2"
       type = "employee"
+      role = "DevOps"
       tags = "{ruby,rails}"
 
     [[scenario.table.row]]
@@ -25,5 +27,6 @@ name = "employees"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
       name = "Employee #3"
+      role = "Project Owner"
       type = "employee"
 

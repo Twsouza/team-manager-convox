@@ -10,6 +10,7 @@ func (ms *ModelSuite) Test_Member_Employee() {
 	m := &Member{
 		Name: "Member Name",
 		Type: "employee",
+		Role: "Software Engineer",
 		Tags: slices.String{"golang", "kubernetes"},
 	}
 
@@ -18,7 +19,32 @@ func (ms *ModelSuite) Test_Member_Employee() {
 	ms.Equal(false, verrs.HasAny())
 }
 
+func (ms *ModelSuite) Test_Member_EmployeeWithoutRole() {
+	m := &Member{
+		Name: "Member Name",
+		Type: "employee",
+		Tags: slices.String{"golang", "kubernetes"},
+	}
+
+	verrs, err := DB.ValidateAndCreate(m)
+	ms.NoError(err)
+	ms.Equal(true, verrs.HasAny())
+}
+
 func (ms *ModelSuite) Test_Member_Contractor() {
+	m := &Member{
+		Name:             "Member Name",
+		Type:             "contractor",
+		ContractDuration: 150,
+		Tags:             slices.String{"golang", "kubernetes"},
+	}
+
+	verrs, err := DB.ValidateAndCreate(m)
+	ms.NoError(err)
+	ms.Equal(false, verrs.HasAny())
+}
+
+func (ms *ModelSuite) Test_Member_ContractorWithoutContractDuration() {
 	m := &Member{
 		Name:             "Member Name",
 		Type:             "contractor",
@@ -77,6 +103,7 @@ func (ms *ModelSuite) Test_Member_WithoutTags() {
 	m := &Member{
 		Name: "Member Name",
 		Type: "employee",
+		Role: "Software Engineer",
 	}
 
 	verrs, err := DB.ValidateAndCreate(m)

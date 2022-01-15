@@ -45,6 +45,7 @@ func (as *ActionSuite) Test_MembersResource_Create_Employee() {
 	m := &models.Member{
 		Name: "Member Name",
 		Type: "employee",
+		Role: "DevOps",
 		Tags: slices.String{"GOLANG", "Kubernetes"},
 	}
 	res := as.JSON("/members").Post(m)
@@ -59,6 +60,16 @@ func (as *ActionSuite) Test_MembersResource_Create_Employee() {
 	for _, v := range employee.Tags {
 		as.Equal(strings.ToLower(v), v)
 	}
+}
+
+func (as *ActionSuite) Test_MembersResource_Create_EmployeeWithoutRole() {
+	m := &models.Member{
+		Name: "Member Name",
+		Type: "employee",
+		Tags: slices.String{"GOLANG", "Kubernetes"},
+	}
+	res := as.JSON("/members").Post(m)
+	as.Equal(http.StatusUnprocessableEntity, res.Code)
 }
 
 func (as *ActionSuite) Test_MembersResource_Create_Contractor() {

@@ -26,7 +26,8 @@ type Member struct {
 	UpdatedAt        time.Time     `json:"-" db:"updated_at"`
 	Name             string        `json:"name" db:"name"`
 	Type             string        `json:"type" db:"type"`
-	ContractDuration int           `json:"contract_duration,omitempty" db:"contract_duration"`
+	ContractDuration int64         `json:"contract_duration,omitempty" db:"contract_duration"`
+	Role             string        `json:"role,omitempty" db:"role"`
 	Tags             slices.String `json:"tags" db:"tags"`
 }
 
@@ -40,12 +41,24 @@ func (m *Member) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringInclusion{Name: "Type", Field: m.Type, List: memberTypes, Message: memberTypeInvalid},
 	)
 
-	if m.Type == "employee" && m.ContractDuration != 0 {
-		verrs.Add("type", "Employee must not have contract duration")
+	if m.Type == "employee" {
+		if m.ContractDuration != 0 {
+			verrs.Add("type", "Employee must not have contract duration")
+		}
+
+		if strings.TrimSpace(m.Role) == "" {
+			verrs.Add("role", "Role can not be blank.")
+		}
 	}
 
-	if m.Type == "contractor" && m.ContractDuration == 0 {
-		verrs.Add("type", "Contractor must have a contract contract")
+	if m.Type == "contractor" {
+		if strings.TrimSpace(m.Role) != "" {
+			verrs.Add("type", "Contractor must not have role.")
+		}
+
+		if m.ContractDuration == 0 {
+			verrs.Add("contract_duration", "contract duration can not be blank.")
+		}
 	}
 
 	return verrs, nil

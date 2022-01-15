@@ -10,6 +10,7 @@ name = "contractors"
       updated_at = "<%= now() %>"
       name = "Contractor #1"
       type = "contractor"
+      role = ""
       tags = "{c#,.net}"
 
     [[scenario.table.row]]
@@ -18,6 +19,7 @@ name = "contractors"
       updated_at = "<%= now() %>"
       name = "Contractor #2"
       type = "contractor"
+      role = ""
       tags = "{golang,kubernetes}"
 
     [[scenario.table.row]]
@@ -26,4 +28,5 @@ name = "contractors"
       updated_at = "<%= now() %>"
       name = "Contractor #3"
       type = "contractor"
+      role = ""
 

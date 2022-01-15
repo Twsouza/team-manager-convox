@@ -1,0 +1,1 @@
+add_column("members", "role", "string", {null: true})

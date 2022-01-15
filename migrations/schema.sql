@@ -31,7 +31,8 @@ CREATE TABLE public.members (
     tags text[],
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    contract_duration integer DEFAULT 0 NOT NULL
+    contract_duration integer DEFAULT 0 NOT NULL,
+    role character varying(255)
 );
 
 
