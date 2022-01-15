@@ -44,24 +44,12 @@ func (m *Member) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		&validators.StringInclusion{Name: "Type", Field: m.Type, List: memberTypes, Message: memberTypeInvalid},
 	)
 
-	if m.Type == "employee" {
-		if m.ContractDuration != 0 {
-			verrs.Add("type", "Employee must not have contract duration")
-		}
-
-		if strings.TrimSpace(m.Role) == "" {
-			verrs.Add("role", "Role can not be blank.")
-		}
+	if m.Type == "employee" && strings.TrimSpace(m.Role) == "" {
+		verrs.Add("role", "Role can not be blank.")
 	}
 
-	if m.Type == "contractor" {
-		if strings.TrimSpace(m.Role) != "" {
-			verrs.Add("type", "Contractor must not have role.")
-		}
-
-		if m.ContractDuration == 0 {
-			verrs.Add("contract_duration", "contract duration can not be blank.")
-		}
+	if m.Type == "contractor" && m.ContractDuration == 0 {
+		verrs.Add("contract_duration", "contract duration can not be blank.")
 	}
 
 	return verrs, nil
@@ -71,6 +59,16 @@ func (m *Member) Validate(tx *pop.Connection) (*validate.Errors, error) {
 func (m *Member) BeforeSave(tx *pop.Connection) error {
 	for i, t := range m.Tags {
 		m.Tags[i] = strings.ToLower(t)
+	}
+
+	// zero the contract duration in case the type changed from contractor to employee
+	if m.Type == "employee" && m.ContractDuration != 0 {
+		m.ContractDuration = 0
+	}
+
+	// delete rolein case the type changed from employee to contractor
+	if m.Type == "contractor" && m.Role != "" {
+		m.Role = ""
 	}
 
 	return nil
