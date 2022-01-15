@@ -1,0 +1,29 @@
+[[scenario]]
+name = "contractors"
+
+  [[scenario.table]]
+    name = "members"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      name = "Contractor #1"
+      type = "contractor"
+      tags = "{c#,.net}"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      name = "Contractor #2"
+      type = "contractor"
+      tags = "{golang,kubernetes}"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      name = "Contractor #3"
+      type = "contractor"
+

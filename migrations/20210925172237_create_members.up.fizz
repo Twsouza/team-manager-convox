@@ -1,0 +1,7 @@
+create_table("members") {
+	t.Column("id", "uuid", {primary: true})
+	t.Column("name", "string")
+	t.Column("type", "string", {"size": 10})
+	t.Column("tags", "text[][]", {"null": true})
+	t.Index("tags", {"unique": false})
+}

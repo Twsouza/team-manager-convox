@@ -1,0 +1,29 @@
+[[scenario]]
+name = "employees"
+
+  [[scenario.table]]
+    name = "members"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      name = "Employee #1"
+      type = "employee"
+      tags = "{php,mysql}"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      name = "Employee #2"
+      type = "employee"
+      tags = "{ruby,rails}"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+      name = "Employee #3"
+      type = "employee"
+
