@@ -1,0 +1,174 @@
+basePath: /v1
+definitions:
+  models.Member:
+    properties:
+      contract_duration:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      role:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+      type:
+        enum:
+        - employee
+        - contractor
+        type: string
+    type: object
+  validate.Errors:
+    properties:
+      errors:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: RESTful API that will help you manage your team. You can create a member
+    (employee or contractor) and attach a tag to him.
+  title: Team Manager API
+  version: "1.0"
+paths:
+  /members:
+    get:
+      operationId: list-members
+      parameters:
+      - description: Go to the page
+        in: query
+        name: page
+        type: integer
+      - description: How many member per pages
+        in: query
+        name: per_page
+        type: integer
+      produces:
+      - application/json
+      - text/xml
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Member'
+            type: array
+        "500":
+          description: ""
+      summary: List members
+    post:
+      consumes:
+      - application/json
+      - text/xml
+      description: Create a new member, employee only accepts role, contractor only
+        accepts contract_duration
+      operationId: create-member
+      parameters:
+      - description: Member Payload
+        in: body
+        name: member
+        required: true
+        schema:
+          $ref: '#/definitions/models.Member'
+      produces:
+      - application/json
+      - text/xml
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/models.Member'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/validate.Errors'
+        "500":
+          description: ""
+      summary: Create a new member
+  /members/{member_id}:
+    delete:
+      consumes:
+      - application/json
+      - text/xml
+      operationId: delete-member
+      parameters:
+      - description: Member ID
+        in: path
+        name: member_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      - text/xml
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Member'
+            type: array
+        "404":
+          description: ""
+        "500":
+          description: ""
+      summary: Delete a member
+    get:
+      operationId: show-member
+      parameters:
+      - description: Member ID
+        in: path
+        name: member_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      - text/xml
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Member'
+            type: array
+        "404":
+          description: ""
+        "500":
+          description: ""
+      summary: Show a member
+    put:
+      consumes:
+      - application/json
+      - text/xml
+      operationId: update-member
+      parameters:
+      - description: Member ID
+        in: path
+        name: member_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      - text/xml
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Member'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/validate.Errors'
+        "500":
+          description: ""
+      summary: Update a member
+swagger: "2.0"

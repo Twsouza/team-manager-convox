@@ -13,7 +13,7 @@ func (as *ActionSuite) Test_MembersResource_List() {
 	as.LoadFixture("employees")
 	as.LoadFixture("contractors")
 
-	res := as.JSON("/members").Get()
+	res := as.JSON("/v1/members").Get()
 	as.Equal(http.StatusOK, res.Code)
 
 	members := models.Members{}
@@ -30,7 +30,7 @@ func (as *ActionSuite) Test_MembersResource_Show() {
 	err := as.DB.First(target)
 	as.NoError(err)
 
-	res := as.JSON("/members/" + target.ID.String()).Get()
+	res := as.JSON("/v1/members/" + target.ID.String()).Get()
 	as.Equal(http.StatusOK, res.Code)
 
 	member := models.Member{}
@@ -48,7 +48,7 @@ func (as *ActionSuite) Test_MembersResource_Create_Employee() {
 		Role: "DevOps",
 		Tags: slices.String{"GOLANG", "Kubernetes"},
 	}
-	res := as.JSON("/members").Post(m)
+	res := as.JSON("/v1/members").Post(m)
 	as.Equal(http.StatusCreated, res.Code)
 
 	employee := models.Member{}
@@ -68,7 +68,7 @@ func (as *ActionSuite) Test_MembersResource_Create_EmployeeWithoutRole() {
 		Type: "employee",
 		Tags: slices.String{"GOLANG", "Kubernetes"},
 	}
-	res := as.JSON("/members").Post(m)
+	res := as.JSON("/v1/members").Post(m)
 	as.Equal(http.StatusUnprocessableEntity, res.Code)
 }
 
@@ -78,7 +78,7 @@ func (as *ActionSuite) Test_MembersResource_Create_Contractor() {
 		Type:             "contractor",
 		ContractDuration: 500,
 	}
-	res := as.JSON("/members").Post(m)
+	res := as.JSON("/v1/members").Post(m)
 	as.Equal(http.StatusCreated, res.Code)
 
 	contractor := models.Member{}
@@ -94,7 +94,7 @@ func (as *ActionSuite) Test_MembersResource_Create_Contractor_WithoutContractDur
 		Name: "Member Name",
 		Type: "contractor",
 	}
-	res := as.JSON("/members").Post(m)
+	res := as.JSON("/v1/members").Post(m)
 	as.Equal(http.StatusUnprocessableEntity, res.Code)
 }
 
@@ -103,7 +103,7 @@ func (as *ActionSuite) Test_MembersResource_Create_InvalidType() {
 		Name: "Member Name",
 		Type: "invalid",
 	}
-	res := as.JSON("/members").Post(m)
+	res := as.JSON("/v1/members").Post(m)
 	as.Equal(http.StatusUnprocessableEntity, res.Code)
 }
 
@@ -112,7 +112,7 @@ func (as *ActionSuite) Test_MembersResource_Create_WithoutName() {
 		Type: "contractor",
 		Tags: slices.String{"php", "laravel"},
 	}
-	res := as.JSON("/members").Post(m)
+	res := as.JSON("/v1/members").Post(m)
 	as.Equal(http.StatusUnprocessableEntity, res.Code)
 }
 
@@ -127,7 +127,7 @@ func (as *ActionSuite) Test_MembersResource_Update() {
 	target.Name = "New Name"
 	target.Tags = slices.String{"JS", "NoDeJs"}
 
-	res := as.JSON("/members/" + target.ID.String()).Put(target)
+	res := as.JSON("/v1/members/" + target.ID.String()).Put(target)
 	as.Equal(http.StatusOK, res.Code)
 
 	member := models.Member{}
@@ -149,7 +149,7 @@ func (as *ActionSuite) Test_MembersResource_Destroy() {
 	err := as.DB.First(target)
 	as.NoError(err)
 
-	res := as.JSON("/members/" + target.ID.String()).Delete()
+	res := as.JSON("/v1/members/" + target.ID.String()).Delete()
 	as.Equal(http.StatusNoContent, res.Code)
 	as.Error(as.DB.Find(&models.Member{}, target.ID))
 }

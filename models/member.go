@@ -19,13 +19,16 @@ var (
 	memberTypes = []string{"employee", "contractor"}
 )
 
-// Member has a name, type and a tags
+// Member can have a name
+// and can be an employee and have a role
+// or can be an contractor and have a contract duration
+// all members can have tags
 type Member struct {
 	ID               uuid.UUID     `json:"id" db:"id"`
 	CreatedAt        time.Time     `json:"-" db:"created_at"`
 	UpdatedAt        time.Time     `json:"-" db:"updated_at"`
 	Name             string        `json:"name" db:"name"`
-	Type             string        `json:"type" db:"type"`
+	Type             string        `json:"type" db:"type" enums:"employee,contractor"`
 	ContractDuration int64         `json:"contract_duration,omitempty" db:"contract_duration"`
 	Role             string        `json:"role,omitempty" db:"role"`
 	Tags             slices.String `json:"tags" db:"tags"`

@@ -23,3 +23,15 @@ docker-compose -f .devcontainer/docker-compose.yml up -d
 ```
 
 You can use the application on [http://127.0.0.1:3000](http://127.0.0.1:3000).
+
+### Swagger
+
+When changes are made, you have to init the docs by running the following command on the terminal:
+
+```
+swag init --parseDependency --parseInternal -g actions/app.go
+```
+
+## How to use the application
+
+Run the application, then open the documentation on http://localhost:3000/v1/doc/index.html. All endpoint are available for test.

@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"team_manager/models"
 
@@ -16,7 +17,14 @@ type MembersResource struct {
 }
 
 // List gets all Members.
-// GET /members
+// @Summary List members
+// @ID list-members
+// @Param page query integer false "Go to the page"
+// @Param per_page query integer false "How many member per pages"
+// @Produce json,xml
+// @Success 200 {object} models.Members
+// @Failure 500
+// @Router /members [get]
 func (v MembersResource) List(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
@@ -43,7 +51,13 @@ func (v MembersResource) List(c buffalo.Context) error {
 }
 
 // Show gets the data for one Member.
-// GET /members/{member_id}
+// @Summary Show a member
+// @ID show-member
+// @Produce json,xml
+// @Param member_id path string true "Member ID"
+// @Success 200 {object} models.Members
+// @Failure 404,500
+// @Router /members/{member_id} [get]
 func (v MembersResource) Show(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
@@ -67,7 +81,16 @@ func (v MembersResource) Show(c buffalo.Context) error {
 }
 
 // Create adds a Member to the DB.
-// path POST /members
+// @Summary Create a new member
+// @Description Create a new member, employee only accepts role, contractor only accepts contract_duration
+// @ID create-member
+// @Accept json,xml
+// @Produce json,xml
+// @Param member body models.Member true "Member Payload"
+// @Success 201 {object} models.Members
+// @Failure 422 {object} validate.Errors
+// @Failure 500
+// @Router /members [post]
 func (v MembersResource) Create(c buffalo.Context) error {
 	// Allocate an empty Member
 	member := &models.Member{}
@@ -82,6 +105,8 @@ func (v MembersResource) Create(c buffalo.Context) error {
 	if !ok {
 		return fmt.Errorf("no transaction found")
 	}
+
+	log.Printf("%+v", member)
 
 	// Validate the data from the request
 	verrs, err := tx.ValidateAndCreate(member)
@@ -105,7 +130,15 @@ func (v MembersResource) Create(c buffalo.Context) error {
 }
 
 // Update changes a Member in the DB.
-// PUT /members/{member_id}
+// @Summary Update a member
+// @ID update-member
+// @Accept json,xml
+// @Produce json,xml
+// @Param member_id path string true "Member ID"
+// @Success 200 {object} models.Members
+// @Failure 422 {object} validate.Errors
+// @Failure 500
+// @Router /members/{member_id} [put]
 func (v MembersResource) Update(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
@@ -146,7 +179,14 @@ func (v MembersResource) Update(c buffalo.Context) error {
 }
 
 // Destroy deletes a Member from the DB.
-// DELETE /members/{member_id}
+// @Summary Delete a member
+// @ID delete-member
+// @Accept json,xml
+// @Produce json,xml
+// @Param member_id path string true "Member ID"
+// @Success 200 {object} models.Members
+// @Failure 404,500
+// @Router /members/{member_id} [delete]
 func (v MembersResource) Destroy(c buffalo.Context) error {
 	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)

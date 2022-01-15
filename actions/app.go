@@ -1,19 +1,23 @@
 package actions
 
 import (
+	"os"
+	"team_manager/docs"
+	"team_manager/models"
+
 	"github.com/gobuffalo/buffalo"
+	"github.com/gobuffalo/buffalo-pop/v2/pop/popmw"
 	"github.com/gobuffalo/envy"
+	contenttype "github.com/gobuffalo/mw-contenttype"
 	forcessl "github.com/gobuffalo/mw-forcessl"
 	i18n "github.com/gobuffalo/mw-i18n"
 	paramlogger "github.com/gobuffalo/mw-paramlogger"
-	"github.com/unrolled/secure"
-
-	"team_manager/models"
-
-	"github.com/gobuffalo/buffalo-pop/v2/pop/popmw"
-	contenttype "github.com/gobuffalo/mw-contenttype"
 	"github.com/gobuffalo/x/sessions"
 	"github.com/rs/cors"
+	"github.com/unrolled/secure"
+
+	buffaloSwagger "github.com/swaggo/buffalo-swagger"
+	"github.com/swaggo/buffalo-swagger/swaggerFiles"
 )
 
 // ENV is used to help switch settings based on where the
@@ -22,19 +26,12 @@ var ENV = envy.Get("GO_ENV", "development")
 var app *buffalo.App
 var T *i18n.Translator
 
-// App is where all routes and middleware for buffalo
-// should be defined. This is the nerve center of your
-// application.
-//
-// Routing, middleware, groups, etc... are declared TOP -> DOWN.
-// This means if you add a middleware to `app` *after* declaring a
-// group, that group will NOT have that new middleware. The same
-// is true of resource declarations as well.
-//
-// It also means that routes are checked in the order they are declared.
-// `ServeFiles` is a CATCH-ALL route, so it should always be
-// placed last in the route declarations, as it will prevent routes
-// declared after it to never be called.
+// @title Team Manager API
+// @version 1.0
+// @description RESTful API that will help you manage your team. You can create a member (employee or contractor) and attach a tag to him.
+
+// @host localhost:3000
+// @BasePath /v1
 func App() *buffalo.App {
 	if app == nil {
 		app = buffalo.New(buffalo.Options{
@@ -45,6 +42,10 @@ func App() *buffalo.App {
 			},
 			SessionName: "_team_manager_session",
 		})
+
+		if ENV == "production" {
+			docs.SwaggerInfo.Host = os.Getenv("HOST")
+		}
 
 		// Automatically redirect to SSL
 		app.Use(forceSSL())
@@ -59,9 +60,10 @@ func App() *buffalo.App {
 		//  c.Value("tx").(*pop.Connection)
 		// Remove to disable this.
 		app.Use(popmw.Transaction(models.DB))
+		v1 := app.Group("/v1")
 
-		app.GET("/", HomeHandler)
-		app.Resource("/members", MembersResource{})
+		v1.GET("/doc/{doc:.*}", buffaloSwagger.WrapHandler(swaggerFiles.Handler))
+		v1.Resource("/members", MembersResource{})
 	}
 
 	return app
