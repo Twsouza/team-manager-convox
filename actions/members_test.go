@@ -63,8 +63,9 @@ func (as *ActionSuite) Test_MembersResource_Create_Employee() {
 
 func (as *ActionSuite) Test_MembersResource_Create_Contractor() {
 	m := &models.Member{
-		Name: "Member Name",
-		Type: "contractor",
+		Name:             "Member Name",
+		Type:             "contractor",
+		ContractDuration: 500,
 	}
 	res := as.JSON("/members").Post(m)
 	as.Equal(http.StatusCreated, res.Code)
@@ -75,6 +76,15 @@ func (as *ActionSuite) Test_MembersResource_Create_Contractor() {
 	as.Equal(m.Name, contractor.Name)
 	as.Equal(m.Type, contractor.Type)
 	as.Equal(len(m.Tags), len(contractor.Tags))
+}
+
+func (as *ActionSuite) Test_MembersResource_Create_Contractor_WithoutContractDuration() {
+	m := &models.Member{
+		Name: "Member Name",
+		Type: "contractor",
+	}
+	res := as.JSON("/members").Post(m)
+	as.Equal(http.StatusUnprocessableEntity, res.Code)
 }
 
 func (as *ActionSuite) Test_MembersResource_Create_InvalidType() {

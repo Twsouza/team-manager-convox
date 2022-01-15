@@ -20,9 +20,10 @@ func (ms *ModelSuite) Test_Member_Employee() {
 
 func (ms *ModelSuite) Test_Member_Contractor() {
 	m := &Member{
-		Name: "Member Name",
-		Type: "contractor",
-		Tags: slices.String{"golang", "kubernetes"},
+		Name:             "Member Name",
+		Type:             "contractor",
+		ContractDuration: 150,
+		Tags:             slices.String{"golang", "kubernetes"},
 	}
 
 	verrs, err := DB.ValidateAndCreate(m)
@@ -32,9 +33,10 @@ func (ms *ModelSuite) Test_Member_Contractor() {
 
 func (ms *ModelSuite) Test_Member_IsTagsLowerCase() {
 	m := &Member{
-		Name: "Member Name",
-		Type: "contractor",
-		Tags: slices.String{"GOLANG", "DocKEr", "kubernetes"},
+		Name:             "Member Name",
+		Type:             "contractor",
+		ContractDuration: 150,
+		Tags:             slices.String{"GOLANG", "DocKEr", "kubernetes"},
 	}
 
 	verrs, err := DB.ValidateAndCreate(m)

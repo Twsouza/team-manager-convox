@@ -30,7 +30,8 @@ CREATE TABLE public.members (
     type character varying(10) NOT NULL,
     tags text[],
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    contract_duration integer DEFAULT 0 NOT NULL
 );
 
 

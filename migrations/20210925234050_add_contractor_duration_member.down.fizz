@@ -1,0 +1,1 @@
+drop_column("members", "contract_duration")
