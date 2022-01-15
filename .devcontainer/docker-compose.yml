@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:13.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: team_manager_development
+
+  pgadmin:
+    image: fenglc/pgadmin4:2.1
+    environment:
+      DEFAULT_USER: admin
+      DEFAULT_PASSWORD: admin
+    ports:
+      - 5050:5050
+    depends_on:
+      - db
+
+  team-manager:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    command: "buffalo dev"
+    volumes:
+      - ..:/app/golang-interview-project-taynan-souza
+    ports:
+      - 3000:3000

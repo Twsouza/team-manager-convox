@@ -1,0 +1,17 @@
+{
+  "name": "golang-interview-project-taynan-souza",
+  "workspaceFolder": "/app/golang-interview-project-taynan-souza",
+  "shutdownAction": "stopCompose",
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
+  "service": "team-manager",
+  "settings": {
+		"go.useLanguageServer": true,
+		"go.gopath": "/go",
+		"go.goroot": "/usr/local/go"
+	},
+  "extensions": [
+		"golang.Go"
+	]
+}
