@@ -1,0 +1,13 @@
+resources:
+  database:
+    type: postgres
+    options:
+      storage: 100
+services:
+  web:
+    build: .
+    environment:
+      - GO_ENV=production
+    port: 3000
+    resources:
+      - database

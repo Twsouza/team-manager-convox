@@ -38,12 +38,19 @@ Run the application, then open the documentation on http://localhost:3000/v1/doc
 
 ## How to deploy
 
-Follow the steps to [install the heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+Follow the steps to [install the Convox CLI](https://docsv2.convox.com/introduction/installation).
 
-Set the stack to container:
+Once you have a rack up and running, create a new app and deploy the application.
 
 ```
-heroku stack:set container
+$ convox apps create --wait
+$ convox deploy --wait
 ```
 
-To deploy the application, push the modification to the Heroku git repository.
+To access the aplication, run services and open the URL:
+
+```
+$ convox services
+SERVICE  DOMAIN                                     PORTS
+web      team-manager-web...convox.site  80:3000 443:3000
+```

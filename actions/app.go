@@ -60,6 +60,9 @@ func App() *buffalo.App {
 		//  c.Value("tx").(*pop.Connection)
 		// Remove to disable this.
 		app.Use(popmw.Transaction(models.DB))
+		app.GET("/", func(c buffalo.Context) error {
+			return c.Render(200, r.String("OKAY"))
+		})
 		v1 := app.Group("/v1")
 
 		v1.GET("/doc/{doc:.*}", buffaloSwagger.WrapHandler(swaggerFiles.Handler))
