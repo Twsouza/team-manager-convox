@@ -4,7 +4,13 @@ orbs:
 workflows:
   deploy:
     jobs:
+      - deploy
+jobs:
+  deploy:
+    executor: convox/cli
+    steps:
+      - checkout
       - convox/deploy:
-          rack: dev-v2
+          rack: dev-v2-2
           app: team-manager
           host: console-staging.convox.com
