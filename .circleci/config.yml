@@ -7,3 +7,4 @@ workflows:
       - convox/deploy:
           rack: dev-v2
           app: team-manager
+          host: console-staging.convox.com
