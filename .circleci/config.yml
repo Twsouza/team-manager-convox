@@ -1,0 +1,9 @@
+version: 2.1
+orbs:
+  convox: convox/orb@1.4.1
+workflows:
+  deploy:
+    jobs:
+      - convox/deploy:
+          rack: dev-v2
+          app: team-manager
