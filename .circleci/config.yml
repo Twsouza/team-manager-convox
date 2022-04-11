@@ -11,6 +11,5 @@ jobs:
     steps:
       - checkout
       - convox/deploy:
-          rack: dev-v2-2
+          rack: staging
           app: team-manager
-          host: console-staging.convox.com
