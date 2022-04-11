@@ -11,5 +11,5 @@ jobs:
     steps:
       - checkout
       - convox/deploy:
-          rack: staging
+          rack: convox/staging
           app: team-manager
