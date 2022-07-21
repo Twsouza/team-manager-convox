@@ -1,11 +1,6 @@
 ---
 development:
-  dialect: postgres
-  database: team_manager_development
-  user: postgres
-  password: postgres
-  host: db
-  pool: 5
+  url: {{envOr "DATABASE_URL" "postgres://postgres:postgres@db:5432/team_manager_development?sslmode=disable"}}
 
 test:
   url: {{envOr "TEST_DATABASE_URL" "postgres://postgres:postgres@db:5432/team_manager_test?sslmode=disable"}}

@@ -43,9 +43,7 @@ func App() *buffalo.App {
 			SessionName: "_team_manager_session",
 		})
 
-		if ENV == "production" {
-			docs.SwaggerInfo.Host = os.Getenv("HOST")
-		}
+		docs.SwaggerInfo.Host = os.Getenv("HOST")
 
 		// Automatically redirect to SSL
 		app.Use(forceSSL())

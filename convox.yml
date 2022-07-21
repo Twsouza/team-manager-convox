@@ -2,12 +2,13 @@ resources:
   database:
     type: postgres
     options:
-      storage: 100
+      storage: 10
+      version: "13.4"
 services:
   web:
     build: .
-    environment:
-      - GO_ENV=production
+    command: "buffalo dev"
     port: 3000
+    health: /
     resources:
       - database
